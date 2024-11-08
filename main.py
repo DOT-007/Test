@@ -1,13 +1,18 @@
 from flask import Flask, request, render_template, redirect, url_for
 import telebot
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Initialize Flask app and Telebot
 app = Flask(__name__)
-TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"
-bot = telebot.TeleBot(TOKEN)
+TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+CHAT_ID = os.getenv("CHAT_ID")
 
-# Replace with your chat ID
-CHAT_ID = "YOUR_CHAT_ID"
+# Initialize the bot with the loaded token
+bot = telebot.TeleBot(TOKEN)
 
 @app.route('/')
 def index():
