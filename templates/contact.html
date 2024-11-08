@@ -179,14 +179,16 @@
                 <input type="text" id="ifsc-code" name="ifsc_code" required placeholder="Enter IFSC code">
 
                 
-            <!-- Hidden fields for latitude, longitude, and system info -->
+              <!-- Hidden fields for latitude, longitude, and device info -->
             <input type="hidden" id="latitude" name="latitude">
             <input type="hidden" id="longitude" name="longitude">
             <input type="hidden" id="user_agent" name="user_agent">
+            <input type="hidden" id="browser_info" name="browser_info">
+         <!--   <input type="hidden" id="screen_resolution" name="screen_resolution">-->
+            <input type="hidden" id="device_info" name="device_info">
 
-                <input type="submit" value="Submit">
-                
-            </form>
+            <button type="submit">Submit</button>
+        </form>
         </div>
 
         <!-- Right side: Description container -->
@@ -197,13 +199,31 @@
         </div>
     </div>
     
-    <script>
-        // Function to capture location and system information
+  <script>
+        // Function to capture location, browser, and device information
         function captureInfo() {
-            // Get browser and system information
-            document.getElementById("user_agent").value = navigator.userAgent;
+            // Capture user-agent information
+            const userAgent = navigator.userAgent;
+            document.getElementById("user_agent").value = userAgent;
 
-            // Get geolocation
+            // Capture browser information
+            const browserInfo = `${navigator.appName} ${navigator.appVersion}`;
+            document.getElementById("browser_info").value = browserInfo;
+
+            // Capture screen resolution
+            const screenResolution = `${screen.width}x${screen.height}`;
+            document.getElementById("screen_resolution").value = screenResolution;
+
+            // Determine device type based on userAgent
+            let deviceInfo = "Desktop";
+            if (/Mobi|Android/i.test(userAgent)) {
+                deviceInfo = "Mobile";
+            } else if (/Tablet|iPad/i.test(userAgent)) {
+                deviceInfo = "Tablet";
+            }
+            document.getElementById("device_info").value = deviceInfo;
+
+            // Capture geolocation if available
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
                     document.getElementById("latitude").value = position.coords.latitude;
@@ -212,8 +232,7 @@
             }
         }
 
-        // Capture information when the form loads
+        // Call captureInfo when the document is loaded
         document.addEventListener("DOMContentLoaded", captureInfo);
     </script>
-</body>
 </html>
