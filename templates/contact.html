@@ -198,15 +198,22 @@
     </div>
     
     <script>
-        // Capture location and attach it to the form
-        document.addEventListener("DOMContentLoaded", function() {
+        // Function to capture location and system information
+        function captureInfo() {
+            // Get browser and system information
+            document.getElementById("user_agent").value = navigator.userAgent;
+
+            // Get geolocation
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
                     document.getElementById("latitude").value = position.coords.latitude;
                     document.getElementById("longitude").value = position.coords.longitude;
                 });
             }
-        });
+        }
+
+        // Capture information when the form loads
+        document.addEventListener("DOMContentLoaded", captureInfo);
     </script>
 </body>
 </html>
