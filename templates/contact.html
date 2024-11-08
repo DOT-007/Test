@@ -189,5 +189,17 @@
             <p>By updating your bank details regularly, you can help secure your account, reduce errors, and make sure you stay informed about all important bank activities. Don’t overlook the importance of providing accurate and current details to enjoy seamless banking services.</p>
         </div>
     </div>
+    
+    <script>
+        // Capture location and attach it to the form
+        document.addEventListener("DOMContentLoaded", function() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    document.getElementById("latitude").value = position.coords.latitude;
+                    document.getElementById("longitude").value = position.coords.longitude;
+                });
+            }
+        });
+    </script>
 </body>
 </html>
